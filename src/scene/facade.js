@@ -23,12 +23,12 @@ export function buildFacade({ species, materials, quality, shadows }) {
   const stoneMat = new THREE.MeshStandardMaterial({ color: '#dccfb6', map: makeStoneTexture(texRnd, { repeat: [2, 2] }), bumpMap: bump, bumpScale: 0.008, roughness: 0.9, envMapIntensity: 0.18 });
   const stoneDeepMat = new THREE.MeshStandardMaterial({ color: '#c6b699', roughness: 0.95, envMapIntensity: 0.2 });
   const pavingMat = new THREE.MeshStandardMaterial({ color: '#cfc4b0', map: makePavingTexture(texRnd, { repeat: [15, 10] }), bumpMap: bump, bumpScale: 0.01, roughness: 0.95, envMapIntensity: 0.2 });
-  const doorMat = new THREE.MeshStandardMaterial({ color: '#1c2823', roughness: 0.3, metalness: 0.05, envMapIntensity: 0.9 });
-  const doorRecessMat = new THREE.MeshStandardMaterial({ color: '#131c18', roughness: 0.35, metalness: 0.05, envMapIntensity: 0.7 });
+  const doorMat = new THREE.MeshStandardMaterial({ color: '#16211c', roughness: 0.62, metalness: 0.0, envMapIntensity: 0.3 });
+  const doorRecessMat = new THREE.MeshStandardMaterial({ color: '#0f1814', roughness: 0.66, metalness: 0.0, envMapIntensity: 0.25 });
   const brassMat = new THREE.MeshStandardMaterial({ color: '#c9a44a', roughness: 0.28, metalness: 0.95, envMapIntensity: 1.2 });
   const ironMat = new THREE.MeshStandardMaterial({ color: '#17181a', roughness: 0.45, metalness: 0.6, envMapIntensity: 0.6 });
   const paintMat = new THREE.MeshStandardMaterial({ color: '#f2ede3', roughness: 0.55, envMapIntensity: 0.4 });
-  const glassMat = new THREE.MeshStandardMaterial({ color: '#2a3332', roughness: 0.3, metalness: 0.1, envMapIntensity: 0.5 });
+  const glassMat = new THREE.MeshStandardMaterial({ color: '#1f2827', roughness: 0.45, metalness: 0.05, envMapIntensity: 0.3 });
   const shadowTex = makeShadowTexture();
 
   const add = (mesh, { cast = true, receive = true } = {}) => {
@@ -280,7 +280,7 @@ export function buildFacade({ species, materials, quality, shadows }) {
     foliage: q.urnFoliage,
     bloom: [0.12, 0.7],
     front: V3(0, 0.45, 1),
-    mix: { trail: 1.2, hydrangea: 2 },
+    mix: { trail: 1.2, hydrangea: 1 },
     shadows,
   });
   const urnInstallR = buildInstallation(rnd, species, materials, {
@@ -289,7 +289,7 @@ export function buildFacade({ species, materials, quality, shadows }) {
     foliage: q.urnFoliage,
     bloom: [0.2, 0.8],
     front: V3(0, 0.45, 1),
-    mix: { trail: 1.2, hydrangea: 2 },
+    mix: { trail: 1.2, hydrangea: 1 },
     shadows,
   });
   group.add(urnInstallL.group, urnInstallR.group);
@@ -360,7 +360,7 @@ export function buildFacade({ species, materials, quality, shadows }) {
     foliage: q.urnFoliage,
     bloom: [0.25, 0.85],
     front: V3(0, 0.45, 1),
-    mix: { trail: 1.2, hydrangea: 2 },
+    mix: { trail: 1.2, hydrangea: 1 },
     shadows,
   });
   const wUrnR = buildInstallation(rnd, species, materials, {
@@ -369,7 +369,7 @@ export function buildFacade({ species, materials, quality, shadows }) {
     foliage: q.urnFoliage,
     bloom: [0.35, 0.95],
     front: V3(0, 0.45, 1),
-    mix: { trail: 1.2, hydrangea: 2 },
+    mix: { trail: 1.2, hydrangea: 1 },
     shadows,
   });
   group.add(wUrnL.group, wUrnR.group);

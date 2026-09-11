@@ -57,7 +57,7 @@ export function pickQuality() {
   return q;
 }
 
-export function initScene(canvas) {
+export async function initScene(canvas, initialProgress = {}) {
   const quality = pickQuality();
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   const shadows = quality.shadows;
@@ -137,7 +137,10 @@ export function initScene(canvas) {
     outro: { focus: new THREE.Vector3((df.x + wf.x) / 2 + 0.3, 2.9, 0.3), offset: new THREE.Vector3(0.2, 0.9, 13.5) },
   };
 
-  const progress = { arch: 0, travel: 0, window: 0, outro: 0 };
+  const progress = { arch: 0, travel: 0, window: 0, outro: 0, ...initialProgress };
+  // ?view=cx,cy,cz,lx,ly,lz renders a fixed, fully bloomed view (used to make the placeholder images)
+  const fixedView = params.get('view')?.split(',').map(Number);
+  if (fixedView?.length === 6) Object.assign(progress, { arch: 1, travel: 1, window: 1, outro: 0 });
   const pointer = { x: 0, y: 0, sx: 0, sy: 0 };
 
   const focus = new THREE.Vector3();
@@ -222,6 +225,10 @@ export function initScene(canvas) {
       camera.position.y += Math.sin(time * 0.29) * 0.03;
     }
     camera.lookAt(focus);
+    if (fixedView) {
+      camera.position.set(fixedView[0], fixedView[1], fixedView[2]);
+      camera.lookAt(fixedView[3], fixedView[4], fixedView[5]);
+    }
 
     // shadow camera follows whatever we're looking at
     const sx = tvCache < 0.5 ? df.x : wf.x;
@@ -255,6 +262,34 @@ export function initScene(canvas) {
   }
 
   resize();
+
+  // Warm up: compile every shader off the critical path, then draw one frame
+  // at the current scroll position so the canvas can fade in already correct.
+  computeGoal();
+  focus.copy(goalFocus);
+  offset.copy(goalOffset);
+  first = false;
+  const sway0 = reduceMotion ? 0 : 1;
+  facade.updateDoorway(progress.arch, 0, sway0);
+  facade.updateWindow(progress.window, 0, sway0);
+  camera.position.set(focus.x + offset.x, focus.y + offset.y, focus.z + offset.z);
+  camera.lookAt(focus);
+  if (fixedView) {
+    camera.position.set(fixedView[0], fixedView[1], fixedView[2]);
+    camera.lookAt(fixedView[3], fixedView[4], fixedView[5]);
+    facade.updateDoorway(1, 0, 0);
+    facade.updateWindow(1, 0, 0);
+  }
+  try {
+    if (renderer.compileAsync) await renderer.compileAsync(scene, camera);
+    else renderer.compile(scene, camera);
+  } catch (err) {
+    console.warn('shader warm-up skipped', err);
+  }
+  mark('compiled');
+  renderer.render(scene, camera);
+  mark('first frame');
+  timer.update();
   requestAnimationFrame(frame);
   if (debug) {
     let frames = 0;

@@ -8,20 +8,48 @@ import { makeBud, makeEucalyptus, makeGypsophila, makeHydrangea, makePeony, make
 // palette — ivory, blush, champagne, dusty pink, the odd burgundy
 // ---------------------------------------------------------------------------
 
+// A natural florist mix — whites are the base, not the whole story.
 export const FLOWER_PALETTE = [
-  ['#fbf6ee', 3.2], // ivory
-  ['#ffffff', 2], // white
-  ['#f6eddc', 2.2], // cream
-  ['#efdfc0', 2], // champagne
-  ['#f4e6de', 1], // the faintest blush
-  ['#ebcfae', 1], // apricot
-  ['#6e2633', 1.1], // burgundy
-  ['#4a1c26', 0.4], // deep claret
+  ['#f4efe4', 2.6], // ivory
+  ['#f6f1e6', 1.4], // white
+  ['#efe3c9', 1.6], // cream
+  ['#f0cfae', 1.6], // apricot
+  ['#efc2b3', 1.6], // warm blush
+  ['#e69a8c', 1.1], // coral
+  ['#d9a2a9', 0.9], // soft rose
+  ['#9b3a4c', 1.2], // deep rose
+  ['#6e2633', 0.9], // burgundy
+  ['#cbb6d6', 0.5], // lilac
+];
+export const ROSE_PALETTE = [
+  ['#f4efe4', 2.6],
+  ['#efe3c9', 1.8],
+  ['#f0cfae', 1.6],
+  ['#efc2b3', 1.6],
+  ['#d9a2a9', 0.8],
+  ['#9b3a4c', 1.2],
+  ['#6e2633', 1.0],
+];
+export const RANUNCULUS_PALETTE = [
+  ['#f4efe4', 2],
+  ['#f0cfae', 2],
+  ['#e69a8c', 1.6],
+  ['#efc2b3', 1.4],
+  ['#efe3c9', 1.2],
+  ['#9b3a4c', 1.0],
+  ['#cbb6d6', 0.6],
+];
+export const PEONY_PALETTE = [
+  ['#f4efe4', 2],
+  ['#efc2b3', 2],
+  ['#e69a8c', 1.2],
+  ['#d9a2a9', 1],
+  ['#9b3a4c', 0.7],
 ];
 export const PALE_PALETTE = [
-  ['#fdfaf4', 3],
-  ['#ffffff', 2],
-  ['#f6efe4', 1.5],
+  ['#f2ede3', 3], // hydrangea: white, green-white, lilac-white
+  ['#e6ebdc', 1.5],
+  ['#e8e0ec', 1.2],
 ];
 export const FOLIAGE = {
   roseLeaf: ['#4f6b46', '#5b7a4f', '#476040'],
@@ -73,12 +101,12 @@ export function randomUnit(rnd) {
 
 export function makeSpecies() {
   return {
-    rose: { geo: makeRose(), weight: 4, scale: [0.42, 0.58], palette: FLOWER_PALETTE, kind: 'flower' },
-    peony: { geo: makePeony(), weight: 1.4, scale: [0.44, 0.58], palette: FLOWER_PALETTE, kind: 'flower' },
-    ranunculus: { geo: makeRanunculus(), weight: 2.4, scale: [0.48, 0.64], palette: FLOWER_PALETTE, kind: 'flower' },
-    hydrangea: { geo: makeHydrangea(), weight: 1.1, scale: [0.75, 0.98], palette: PALE_PALETTE, kind: 'flower' },
+    rose: { geo: makeRose(), weight: 4.5, scale: [0.42, 0.58], palette: ROSE_PALETTE, kind: 'flower' },
+    peony: { geo: makePeony(), weight: 1.4, scale: [0.42, 0.56], palette: PEONY_PALETTE, kind: 'flower' },
+    ranunculus: { geo: makeRanunculus(), weight: 2.8, scale: [0.48, 0.64], palette: RANUNCULUS_PALETTE, kind: 'flower' },
+    hydrangea: { geo: makeHydrangea(), weight: 0.55, scale: [0.65, 0.85], palette: PALE_PALETTE, kind: 'flower' },
     gypsophila: { geo: makeGypsophila(), weight: 1.8, scale: [0.8, 1.15], palette: [['#ffffff', 1]], kind: 'filler' },
-    bud: { geo: makeBud(), weight: 1.3, scale: [0.5, 0.7], palette: FLOWER_PALETTE, kind: 'flower' },
+    bud: { geo: makeBud(), weight: 1.3, scale: [0.5, 0.7], palette: ROSE_PALETTE, kind: 'flower' },
     roseLeaf: { geo: makeRoseLeaf(), weight: 3, scale: [0.6, 0.9], colors: FOLIAGE.roseLeaf, kind: 'foliage' },
     eucalyptus: { geo: makeEucalyptus(), weight: 3, scale: [0.65, 1.0], colors: FOLIAGE.eucalyptus, kind: 'foliage' },
     ruscus: { geo: makeRuscus(), weight: 2, scale: [0.65, 0.95], colors: FOLIAGE.ruscus, kind: 'foliage' },

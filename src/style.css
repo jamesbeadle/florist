@@ -119,6 +119,12 @@ p {
   display: block;
   z-index: 0;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+
+#scene.is-ready {
+  opacity: 1;
 }
 
 .fallback-bg {
@@ -126,9 +132,7 @@ p {
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(60% 50% at 20% 20%, #efe4dc 0%, transparent 70%),
-    radial-gradient(50% 40% at 80% 70%, #e6e1d6 0%, transparent 70%),
-    var(--cream);
+    linear-gradient(to bottom, #f7f3ec 0%, #f2ecdf 55%, #e6dfd0 56%, #ece6da 100%);
 }
 
 main,
@@ -165,16 +169,16 @@ main,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px var(--gutter);
-  transition: background 0.4s, box-shadow 0.4s, padding 0.4s;
+  padding: 16px var(--gutter);
+  background: rgba(247, 243, 236, 0.94);
+  box-shadow: 0 1px 0 var(--line);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: padding 0.4s;
 }
 
 .nav.is-scrolled {
   padding-block: 10px;
-  background: rgba(247, 243, 236, 0.86);
-  box-shadow: 0 1px 0 var(--line);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
 .brand {
@@ -191,8 +195,7 @@ main,
 
 .brand-mark {
   color: var(--gold);
-  font-size: 1.1em;
-  line-height: 1;
+  flex: none;
 }
 
 .nav-links {
@@ -858,4 +861,11 @@ main,
   .gallery-item img {
     transition: none;
   }
+}
+
+/* used only when rendering the placeholder images from the scene */
+body.hide-ui main,
+body.hide-ui .nav,
+body.hide-ui .footer {
+  visibility: hidden;
 }

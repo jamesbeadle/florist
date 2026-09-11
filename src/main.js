@@ -4,6 +4,8 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const clamp01 = (x) => Math.min(1, Math.max(0, x));
 
+import { initScene } from './scene/index.js';
+
 // ---------- 3D scene ----------
 
 let scene3d = null;
@@ -13,10 +15,12 @@ async function startScene() {
   try {
     const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
     if (!gl) throw new Error('no webgl');
-    const { initScene } = await import('./scene/index.js');
-    scene3d = initScene(canvas);
+    // initScene builds the world, compiles every shader and renders the first
+    // frame at the current scroll position before it resolves — so the canvas
+    // fades in already correct, with no pop and no first-frame stall.
+    scene3d = await initScene(canvas, computeProgress());
     document.body.classList.add('has-scene');
-    onScroll();
+    requestAnimationFrame(() => canvas.classList.add('is-ready'));
   } catch (err) {
     console.warn('3D scene unavailable, using the soft fallback background.', err);
     canvas.remove();
@@ -41,22 +45,28 @@ function visibility(el, vh) {
   return clamp01((vh - r.top) / (r.height + vh));
 }
 
+function computeProgress() {
+  const vh = window.innerHeight;
+  const y = window.scrollY;
+  const runway = Math.max(1, hero.offsetHeight - vh);
+  return {
+    arch: clamp01(y / runway),
+    travel: clamp01((visibility(sections.services, vh) - 0.05) / 0.7),
+    window: clamp01((visibility(sections.portfolio, vh) - 0.05) / 0.75),
+    outro: clamp01((visibility(sections.contact, vh) - 0.1) / 0.6),
+  };
+}
+
 let ticking = false;
 function onScroll() {
   if (ticking) return;
   ticking = true;
   requestAnimationFrame(() => {
     ticking = false;
-    const vh = window.innerHeight;
+    const p = computeProgress();
+    const arch = p.arch;
     const y = window.scrollY;
-    const runway = Math.max(1, hero.offsetHeight - vh);
-    const arch = clamp01(y / runway);
-
-    const travel = clamp01((visibility(sections.services, vh) - 0.05) / 0.7);
-    const win = clamp01((visibility(sections.portfolio, vh) - 0.05) / 0.75);
-    const outro = clamp01((visibility(sections.contact, vh) - 0.1) / 0.6);
-
-    scene3d?.setProgress({ arch, travel, window: win, outro });
+    scene3d?.setProgress(p);
 
     // hero copy drifts up and fades as the arch finishes blooming
     const fade = 1 - clamp01((arch - 0.72) / 0.28);
@@ -168,5 +178,6 @@ form.addEventListener('submit', async (e) => {
 
 $('#year').textContent = new Date().getFullYear();
 
+if (new URLSearchParams(location.search).has('view')) document.body.classList.add('hide-ui');
 startScene();
 onScroll();

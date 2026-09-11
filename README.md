@@ -13,7 +13,7 @@ npm run dev
 
 ## Things to swap before launch
 
-- **Photos** — drop Amy's real photos into `public/images/` using the same file names (`portfolio-01.jpg` … `portfolio-08.jpg`, `service-*.jpg`, `og-image.jpg`) and they just work. Update the `alt` text in `index.html`. Portrait ~1200×1500, landscape ~1200×900, JPEG quality ~75 is plenty.
+- **Photos** — the portfolio and service images are currently free Unsplash stock photos hot-linked in `index.html`. Replace each `src` with Amy's own photo (drop files into `public/images/` and point the `src` at `/images/...`), and update the `alt` text. Portrait ~1200×1500, landscape ~1200×900, JPEG quality ~75 is plenty.
 - **Contact details** — email, phone, Instagram and town are in the Contact section of `index.html` (search for `contact-details`).
 - **Testimonials** — the three quotes are placeholders. Replace them with real reviews.
 - **Enquiry form email** — set `RESEND_API_KEY`, `CONTACT_TO` and `CONTACT_FROM` in the Vercel project (see `.env.example`). Locally, `npm run dev` just prints enquiries to the terminal.

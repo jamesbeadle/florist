@@ -31,7 +31,7 @@ function petal({ width, height, cup = 1, curl = 0, tilt = 0.6, radius = 0.05, an
     if (ruffle) z += ruffle * Math.sin(ruffleFreq * Math.PI * (u + 0.5) + v * 2.0) * Math.pow(v, 1.5) * Math.min(1, Math.abs(u) * 2.2 + 0.2);
     pos.setXYZ(i, x + lean * v * v, y, z);
     // a touch darker at the base, lighter at the tip
-    const c = shade * (0.74 + 0.26 * v);
+    const c = shade * (0.66 + 0.34 * v);
     colors[i * 3] = c;
     colors[i * 3 + 1] = c;
     colors[i * 3 + 2] = c;
